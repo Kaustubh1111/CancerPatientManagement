@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static from static %}
+{% block styles %}
+<title>Book Appointment</title>
+<style>
+    body{
+        animation: animate 1s;
+    } 
+    .background{
+        background: rgba(36, 34, 34, 0.514) url("{% static 'images/img_h1.jpg' %}");
+        background-size: cover;
+        background-blend-mode: darken;
+    }
+    .content{
+        background: linear-gradient(.35turn,#C9FFBF,#FFAFBD);
+        border-radius: 10px;
+        width: 600px;
+        height: auto;
+        margin:auto;
+        
+    }
+    .input{
+        border: 2px solid red;
+        padding: 3px;
+        width:90%;
+        transition: .5s;
+        outline: none;
+    }
+    .input:focus{
+        border-radius: 15px;
+        border-color: #20e70e;
+        padding:7px;
+        outline: none;
+    }
+
+    @keyframes animate{
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    
+        to{
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media only screen and (max-width: 700px){
+        .content{
+            width: 90%;
+            height:100%;
+        }
+    }
+</style>
+
+{% endblock  %}
+
+{% block content %}
+
+<section class="content">
+    <center>
+        {% if messages %}
+            {% for msg in messages %}
+                <script>
+                    alert("{{msg}}")                                    
+                </script>
+            {% endfor %}
+        {% endif %}
+
+        <div class="form">
+            <div class="web-header">
+                <img src="{% static 'images/CPMS.png' %}" width="70" height="70" alt="CPMS logo">
+                <h3 class="form-header" style="color: rgb(255, 153, 0);">Book An Appointment</h3>
+            </div>
+            <form action="bookapp" method="POST">
+                
+                    {%csrf_token%}
+                    <div class="input-group">
+                        {% for p in patientobj %}
+                                    
+             
+                            <input class="input" type="text" placeholder="Patient First Name" name="ap_patient_fname" value="{{p.fname}}" required size="16">
+                            <input class="input" type="text" placeholder="Patient Last Name" name="ap_patient_lname" value="{{p.lname}}" required size="16">
+                            <input class="input" type="email" placeholder="Patient Email Address" name="ap_patient_email" value="{{p.email}}" size="40"
+                                required><br>
+                            <input class="input" type="text" placeholder="Mobile Number" name="ap_patient_number" required maxlength="10" size="40"><br>
+                            <input class="input" type="text" placeholder="Cancer Type" name="cancer_type" required size="40"><br>
+                            <b>Time for Appointment</b><input class="input"  type="datetime-local" name="ap_time"
+                                required><br>
+                            <b>Why do you want to meet the doctor?</b><textarea class="input" cols="42" rows="2"
+                                name="ap_label" required></textarea><br>
+                            <input class="input" type="text" placeholder="Doctor First Name" name="ap_doc_fname" required size="16">
+                            <input class="input" type="text" placeholder="Doctor Last Name" name="ap_doc_lname" required size="16"><br>
+                            <input class="btn" type="submit" value="Submit" name="submit">
+                            <input class="btn" type="reset" value="Reset" name="reset">
+                        {% endfor %}
+                    </div>
+            </form>
+        </div>
+    </center>
+</section>
+{% endblock content %}

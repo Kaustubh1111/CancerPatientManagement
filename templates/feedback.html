@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static from static %}
+{% block styles %}
+<title>Feedback</title>
+
+<style>
+    body{
+        animation: animate 1s;
+        width:100%;
+        height:100vh; 
+    }
+    .background{
+        background: rgba(36, 34, 34, 0.514) url("{% static 'images/img_h1.jpg' %}");
+        background-size: cover;
+        background-blend-mode: darken;
+    }
+    .form{
+        background-color:rgb(193, 240, 248);
+        border-radius: 10px;
+        width: 500px;
+        height: 320px;
+        margin-top: 50px;  
+        color: rgb(37, 9, 116);
+        background: linear-gradient(.35turn,#C9FFBF,#FFAFBD);
+    }
+    
+    .web-header img{
+        margin-top: 20px;
+    }
+    
+    .form-header{
+        margin-top: 20px;
+    }
+    
+    .input{
+        border-radius: 5px;
+        padding:3px;
+        border: 2px solid rgb(86, 114, 235);
+        margin: 7px;
+        width:75%;
+        transition: .5s;
+        outline: none;
+    }
+    .input:focus{
+        border-radius: 15px;
+        border-color: #20e70e;
+        padding:7px;
+        outline: none;
+    }
+    
+    .btn{
+       font-size: 20px;
+       color: rgb(241, 237, 235);
+       background-color: rgb(6, 40, 85);
+       width: 40%;
+       border-radius: 3px;
+       margin:7px;
+       outline:none;
+    }
+    
+    .btn:focus{
+        color:aqua;
+        background-color: black;
+        outline:none;
+    }
+    
+    .btn:hover{
+        color:aqua;
+        background-color: black;
+    }
+    
+    @keyframes animate{
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    
+        to{
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media only screen and (max-width: 700px){
+        .form{
+            width: 90%;
+            height:100%;
+        }
+    }
+</style>
+{% endblock  %}
+
+{% block content %}
+
+<div class="contact form" id="contact">
+    <form action="givefeedback" method="POST">
+        {% csrf_token %}
+        <center>
+        <div class="input-group">
+            <br>
+            <h3 class="form-header">Help us to improve</h3>
+            {% for p in patientobj %}
+                <input class="input" type="text" name='uname' value="{{p.uname}}" placeholder="Enter User name" required><br>
+                <input class="input" type="email" placeholder="Enter Email address" value="{{p.email}}" name="email" required size="37.5"><br>
+                <textarea name="fb" class="input" rows="5" cols="20" placeholder="Enter feedback here..."></textarea>
+                <input type="submit" class="btn submit" type="button" value="Submit"><br>
+            {% endfor %}
+
+            {% if messages %}
+                {% for msg in messages %}
+                <script>
+                    alert("{{msg}}")                                    
+                </script>
+                {% endfor %}
+            {% endif %}
+        </div>
+        </center>
+    </form>
+</div>
+{% endblock content %}
